@@ -2,14 +2,14 @@
   "name": "setlinn-backend",
   "version": "1.0.0",
   "description": "setlinn apu",
-  "main": "src/index.js",
+  "main": "./dist/index.js",
   "engines": {
     "node": "16.15.1"
   },
   "author": "<ohenesetwumasi@gmail.com>",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/index.js",
+    "start": "node ./dist/index.js",
     "build": "tsc",
     "dev": "nodemon src/index.ts",
     "data:import": "ts-node src/seeder",
