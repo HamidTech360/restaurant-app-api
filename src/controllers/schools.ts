@@ -108,3 +108,29 @@ export const deleteSchool = expressAsyncHandler(
         }
     }
 )
+
+export const searchSchool = expressAsyncHandler(
+    async(req:Request, res:Response)=>{
+        try{
+            const {keyword} = req.query
+            const result = await School.find({
+                $or:[
+                   {schoolName:{$regex:keyword, $options:"i"}},
+                   {department:{$regex:keyword, $options:"i"}} ,
+                   {faculty:{$regex:keyword, $options:"i"}}  
+                ]
+            })
+
+            res.json({
+                message:`${result.length} items returned from search query`,
+                result
+            })
+        }catch(error){
+            res.status(500).send({
+                message:'Server error',
+                error
+            })
+            console.log(error)
+        }
+    }
+)

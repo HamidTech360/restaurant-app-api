@@ -6,6 +6,7 @@ const router = Router();
 
 router.post("/", controller.createSchoolRecord);
 router.get("/", controller.getAllSchools)
+router.get("/search", controller.searchSchool)
 router.get("/:id", controller.getSingleSchool)
 router.delete("/:id", controller.deleteSchool)
 
