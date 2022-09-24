@@ -1,11 +1,13 @@
 import { Request, Response } from "express";
 import expressAsyncHandler from "express-async-handler";
 import Admin from "../models/admin";
+import { SendMail } from "../utils/mail";
 import { generateAccessToken } from "../utils/token";
 
+//@ts-ignore
 export const registerAdmin = expressAsyncHandler(
     async (req:Request, res:Response)=>{
-        const {userName, email, password} = req.body
+        const {username, email, password, firstName, lastName} = req.body
         
         try{
             const adminExist = await Admin.findOne({email:email})
@@ -15,11 +17,14 @@ export const registerAdmin = expressAsyncHandler(
             }
             
             const newAdmin = new Admin({
-                userName,
+                userName:username,
                 email,
-                password
+                password,
+                firstName,
+                lastName
             })
             await newAdmin.save()
+            
             res.json({
                 message:'New admin created'
             })
@@ -45,7 +50,13 @@ export const login = expressAsyncHandler(
                   .status(400)
                   .json({ message: "Password is incorrect", key: "password" });
                   return
+            }else if(!admin.isVerified){
+                res
+                  .status(400)
+                  .json({ message: "You don't have access to this portal yet", key: "verify" });
+                  return
             }
+
 
             const accessToken = generateAccessToken({sub:admin._id})
             res.json({
@@ -54,6 +65,21 @@ export const login = expressAsyncHandler(
             })
 
 
+        }catch(error){
+            res.status(500).send('Server Error')
+        }
+    }
+)
+
+export const getAdmin = expressAsyncHandler(
+    async (req:any, res:Response)=>{
+        console.log(req.user?._id)
+        try{
+            const admin = await Admin.findById(req.user?._id)
+            res.json({
+                message:'Admin fetched',
+                admin
+            })
         }catch(error){
             res.status(500).send('Server Error')
         }

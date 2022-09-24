@@ -7,6 +7,7 @@ import cors from "cors";
 //route imports
 import schools from './routes/schools'
 import auth from './routes/auth'
+import admin from './routes/admin'
 
 //dotenv config
 config();
@@ -20,6 +21,7 @@ app.use(express.json());
 
 app.use("/api/schools", schools);
 app.use("/api/auth", auth)
+app.use("/api/admins", admin)
 
 
 app.get("/", (res: Response) => res.send("Hello"));
