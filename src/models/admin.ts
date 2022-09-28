@@ -26,6 +26,10 @@ const adminSchema = new Schema({
     isVerified:{
       type:Boolean,
       default:false
+    },
+    isMainAdmin:{
+      type:Boolean,
+      default:false
     }
 }, {timestamps:true})
 

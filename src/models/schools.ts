@@ -5,15 +5,20 @@ const schoolSchema = new Schema ({
         type:String,
         required:true
     },
+    author:{
+        type: mongoose.SchemaTypes.ObjectId,
+        required: true,
+        ref: "Admin",
+    },
     department:{
         type:String,
         required:true
     },
-    fee:{
+    contact:{
         type:String,
         required:true
     },
-    currency:{
+    fee:{
         type:String,
         required:true
     },
@@ -36,10 +41,6 @@ const schoolSchema = new Schema ({
         type:String,
         required:true
     },
-    PhoneNumber:{
-        type:String,
-        required:true
-    },
     courseOverview:{
         type:String,
         required:true
@@ -52,7 +53,7 @@ const schoolSchema = new Schema ({
         type:String,
         required:true
     },
-    service:{
+    services:{
         type:String,
         required:true
     },

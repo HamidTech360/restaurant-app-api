@@ -19,11 +19,12 @@ export const getAllAdmins = expressAsyncHandler(
 export const verifyAdmin = expressAsyncHandler(
     async (req:Request, res:Response)=>{
         const {admin} = req.body
+        const action = req.query.action
         console.log(admin)
         try{
             const admin__c = await Admin.findByIdAndUpdate(
                 admin, 
-                {isVerified:true},
+                {isVerified:action=="verify"?true:false},
                 {new:true}
             )
             res.json({

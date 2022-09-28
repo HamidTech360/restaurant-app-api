@@ -3,7 +3,8 @@ import expressAsyncHandler from "express-async-handler";
 import School from "../models/schools";
 
 export const createSchoolRecord = expressAsyncHandler(
-    async(req:Request, res:Response)=>{
+    async(req:any, res:Response)=>{
+        console.log(req.body)
         const {
             schoolName,
             department,
@@ -12,13 +13,12 @@ export const createSchoolRecord = expressAsyncHandler(
             country,
             email,
             website,
-            PhoneNumber,
             courseOverview,
             funding,
             requirement,
-            service,
+            services,
             aboutSchool,
-            currency
+            contact
         } = req.body
         try{
             const school = await School.create({
@@ -29,13 +29,13 @@ export const createSchoolRecord = expressAsyncHandler(
                 country,
                 email,
                 website,
-                PhoneNumber,
                 courseOverview,
                 funding,
                 requirement,
-                service,
-                aboutSchool,
-                currency
+                services,
+                aboutSchool, 
+                contact,
+                author:req.user._id
             })
 
             res.json({
@@ -99,6 +99,30 @@ export const deleteSchool = expressAsyncHandler(
             const deleteSchool = await School.findByIdAndUpdate(req.params.id, {deleted:true})
             res.json({
                 message:'School record deleted'
+            })
+        }catch(error){
+            res.status(500).send({
+                message:'Server error',
+                error
+            })
+        }
+    }
+)
+
+export const getUserUploads = expressAsyncHandler(
+    async(req:any, res:any)=>{
+            const id = req.params.id
+          
+        try{
+           
+            
+            const schools = await School.find({author:id})
+                .where({
+                    $or: [{ deleted: { $eq: false } }, { deleted: { $eq: null } }],
+                })
+            res.json({
+                message:'User upload fetched',
+                schools
             })
         }catch(error){
             res.status(500).send({
