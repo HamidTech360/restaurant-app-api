@@ -6,6 +6,8 @@ const router = Router();
 
 
 router.get("/", loggedIn, controller.getAllAdmins)
+router.get("/:id", loggedIn, controller.GetAdmin)
 router.post("/", loggedIn, controller.verifyAdmin)
+router.put("/", loggedIn, controller.editAdmin)
 
 export default router;
