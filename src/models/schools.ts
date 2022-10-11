@@ -5,6 +5,9 @@ const schoolSchema = new Schema ({
         type:String,
         required:true
     },
+    file:{
+        type:String
+    },
     author:{
         type: mongoose.SchemaTypes.ObjectId,
         required: true,

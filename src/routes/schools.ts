@@ -6,7 +6,7 @@ import { loggedIn } from "../middleware/auth";
 const router = Router();
 
 router.post("/", loggedIn, controller.createSchoolRecord);
-router.get("/", controller.getAllSchools)
+router.get("/",controller.getAllSchools)
 router.get("/search", controller.searchSchool)
 router.get("/trash",loggedIn, controller.fetchDeleted)
 router.get("/user/:id",loggedIn, controller.getUserUploads)

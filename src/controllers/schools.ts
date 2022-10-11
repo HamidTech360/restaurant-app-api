@@ -1,11 +1,11 @@
-import axios from "axios";
 import { Request, Response } from "express";
 import expressAsyncHandler from "express-async-handler";
 import School from "../models/schools";
+import cloudinary from "../utils/cloud";
 
 export const createSchoolRecord = expressAsyncHandler(
     async(req:any, res:Response)=>{
-        console.log(req.body)
+        // console.log(req.body)
         const {
             schoolName,
             department,
@@ -19,8 +19,22 @@ export const createSchoolRecord = expressAsyncHandler(
             requirement,
             services,
             aboutSchool,
-            contact
+            contact,
+            file
         } = req.body
+        let fileName;
+
+        if(file){
+           
+            try{
+                const uploadResponse = await cloudinary.uploader.upload(file,{
+                    upload_preset:'schools'
+                })
+                fileName = uploadResponse.secure_url 
+               }catch(ex){
+                   console.log('UPLOAD ERROR', ex);   
+               }
+        }
         try{
             const school = await School.create({
                 schoolName,
@@ -36,7 +50,8 @@ export const createSchoolRecord = expressAsyncHandler(
                 services,
                 aboutSchool, 
                 contact,
-                author:req.user._id
+                author:req.user._id,
+                file:fileName
             })
 
             res.json({
@@ -138,6 +153,26 @@ export const searchSchool = expressAsyncHandler(
     async(req:Request, res:Response)=>{
         try{
             const {keyword} = req.query
+            console.log(req.query)
+            const perPage = Number(req.query.perPage) || 50
+            const page = Number(req.query.page) || 0
+            const count = await School.countDocuments({
+                $and:[
+                    {
+                        $or: [{ deleted: { $eq: false } }, { deleted: { $eq: null } }],
+                    },
+                    {
+                        $or:[
+                            {schoolName:{$regex:keyword, $options:"i"}},
+                            {department:{$regex:keyword, $options:"i"}} ,
+                            {faculty:{$regex:keyword, $options:"i"}},
+                            {country:{$regex:keyword, $options:"i"}}  
+                        ]
+                    }
+                ]
+            });
+            const numPages = Math.ceil(count / perPage);
+
            
             const result = await School.find({
                $and:[
@@ -153,15 +188,18 @@ export const searchSchool = expressAsyncHandler(
                 }
                ]
                 
-            }).populate("author")
-
-            // .where({
-            //     $or: [{ deleted: { $eq: false } }, { deleted: { $eq: null } }],
-            // })
+            })
+            .populate("author")
+            .sort({createdAt: -1 })
+            .limit(perPage)
+            .skip(page * perPage)
+            
 
             res.json({
                 message:`${result.length} items returned from search query`,
-                result
+                result,
+                count,
+                numPages
             })
         }catch(error){
             res.status(500).send({
@@ -176,6 +214,7 @@ export const searchSchool = expressAsyncHandler(
 export const editSchoolRecord = expressAsyncHandler(
     async(req:any, res:any)=>{
         const {id} = req.params
+        
         try{
             const {
                 schoolName,
@@ -190,8 +229,21 @@ export const editSchoolRecord = expressAsyncHandler(
                 requirement,
                 services,
                 aboutSchool,
-                contact
+                contact,
+                file
             } = req.body
+            let fileName;
+            if(file){
+           
+                try{
+                    const uploadResponse = await cloudinary.uploader.upload(file,{
+                      upload_preset:'schools'
+                    })
+                    fileName = uploadResponse.secure_url 
+                }catch(ex){
+                       console.log('UPLOAD ERROR', ex);   
+                }
+            }
 
             const update = await School.findByIdAndUpdate(id, {
                 ...(schoolName && { schoolName }),
@@ -207,6 +259,7 @@ export const editSchoolRecord = expressAsyncHandler(
                 ...(services && { services }),
                 ...(aboutSchool && { aboutSchool }),
                 ...(contact && { contact }),
+                ...(file && { file:fileName }),
             }, {new:true})
             res.json({
                 message:'Record Updated',
