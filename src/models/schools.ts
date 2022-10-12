@@ -8,6 +8,9 @@ const schoolSchema = new Schema ({
     file:{
         type:String
     },
+    logo:{
+        type:String
+    },
     author:{
         type: mongoose.SchemaTypes.ObjectId,
         required: true,

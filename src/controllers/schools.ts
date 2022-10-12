@@ -20,9 +20,11 @@ export const createSchoolRecord = expressAsyncHandler(
             services,
             aboutSchool,
             contact,
-            file
+            file,
+            logo
         } = req.body
         let fileName;
+        let logoName;
 
         if(file){
            
@@ -31,9 +33,20 @@ export const createSchoolRecord = expressAsyncHandler(
                     upload_preset:'schools'
                 })
                 fileName = uploadResponse.secure_url 
-               }catch(ex){
+            }catch(ex){
                    console.log('UPLOAD ERROR', ex);   
-               }
+            }
+        }
+
+        if(logo){
+            try{
+                const uploadResponse = await cloudinary.uploader.upload(logo,{
+                    upload_preset:'schools'
+                })
+                logoName = uploadResponse.secure_url 
+            }catch(ex){
+                   console.log('UPLOAD ERROR', ex);   
+            }
         }
         try{
             const school = await School.create({
@@ -51,7 +64,8 @@ export const createSchoolRecord = expressAsyncHandler(
                 aboutSchool, 
                 contact,
                 author:req.user._id,
-                file:fileName
+                file:fileName,
+                logo:logoName
             })
 
             res.json({
@@ -95,9 +109,15 @@ export const getSingleSchool = expressAsyncHandler(
                 .where({
                     $or: [{ deleted: { $eq: false } }, { deleted: { $eq: null } }],
             }).populate('author')
+
+            const similarSchools = await School
+                .find({department:school.department})
+                .limit(6)
+                .sort({createdAt: -1 })
             res.json({
                 message:'School record fetched',
-                school
+                school,
+                similar:similarSchools
             })
 
         }catch(error){
@@ -230,9 +250,11 @@ export const editSchoolRecord = expressAsyncHandler(
                 services,
                 aboutSchool,
                 contact,
-                file
+                file,
+                logo
             } = req.body
             let fileName;
+            let logoName;
             if(file){
            
                 try{
@@ -244,6 +266,19 @@ export const editSchoolRecord = expressAsyncHandler(
                        console.log('UPLOAD ERROR', ex);   
                 }
             }
+
+            if(logo){
+           
+                try{
+                    const uploadResponse = await cloudinary.uploader.upload(logo,{
+                      upload_preset:'schools'
+                    })
+                    logoName = uploadResponse.secure_url 
+                }catch(ex){
+                       console.log('UPLOAD ERROR', ex);   
+                }
+            }
+
 
             const update = await School.findByIdAndUpdate(id, {
                 ...(schoolName && { schoolName }),
@@ -260,6 +295,7 @@ export const editSchoolRecord = expressAsyncHandler(
                 ...(aboutSchool && { aboutSchool }),
                 ...(contact && { contact }),
                 ...(file && { file:fileName }),
+                ...(logo && { logo:logoName }),
             }, {new:true})
             res.json({
                 message:'Record Updated',
