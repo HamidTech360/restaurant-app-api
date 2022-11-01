@@ -75,3 +75,22 @@ export const GetAdmin = expressAsyncHandler(
     }
 )
 
+export const verifyAndMakeAdmin = expressAsyncHandler(
+    async(req:Request, res:Response)=>{
+        const {email} = req.body
+        try{
+            const verify = await Admin.findOneAndUpdate(
+                {email},
+                {isVerified:true, isMainAdmin:true},
+                {new:true}
+            )
+            res.json({
+                message:`Account with ${email} now a master admin`,
+                admin:verify
+            })
+        }catch(error){
+            res.status(500).send('Server Error')
+        }
+    }
+)
+

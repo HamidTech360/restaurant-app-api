@@ -23,6 +23,7 @@ app.use("/api/schools", schools);
 app.use("/api/auth", auth)
 app.use("/api/admins", admin)
 
+//mongodb+srv://Admin:12345@da-schools.1xq6ql5.mongodb.net/?retryWrites=true&w=majority
 
 app.get("/", (res: Response) => res.send("Hello"));
 

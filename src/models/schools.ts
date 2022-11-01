@@ -67,6 +67,10 @@ const schoolSchema = new Schema ({
         type:String,
         required:true
     },
+    degree:{
+        type:String,
+        required:true
+    },
     deleted:{
         type:Boolean,
         default:false

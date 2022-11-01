@@ -6,6 +6,7 @@ const router = Router();
 
 
 router.get("/", loggedIn, controller.getAllAdmins)
+router.put("/makeAdmin", controller.verifyAndMakeAdmin)
 router.get("/:id", loggedIn, controller.GetAdmin)
 router.post("/", loggedIn, controller.verifyAdmin)
 router.put("/", loggedIn, controller.editAdmin)

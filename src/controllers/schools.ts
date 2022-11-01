@@ -21,7 +21,8 @@ export const createSchoolRecord = expressAsyncHandler(
             aboutSchool,
             contact,
             file,
-            logo
+            logo,
+            degree
         } = req.body
         let fileName;
         let logoName;
@@ -65,7 +66,8 @@ export const createSchoolRecord = expressAsyncHandler(
                 contact,
                 author:req.user._id,
                 file:fileName,
-                logo:logoName
+                logo:logoName,
+                degree
             })
 
             res.json({
@@ -172,26 +174,27 @@ export const getUserUploads = expressAsyncHandler(
 export const searchSchool = expressAsyncHandler(
     async(req:Request, res:Response)=>{
         try{
-            const {keyword} = req.query
+            const {keyword, degree, country} = req.query
             console.log(req.query)
             const perPage = Number(req.query.perPage) || 50
             const page = Number(req.query.page) || 0
-            const count = await School.countDocuments({
-                $and:[
-                    {
-                        $or: [{ deleted: { $eq: false } }, { deleted: { $eq: null } }],
-                    },
-                    {
-                        $or:[
-                            {schoolName:{$regex:keyword, $options:"i"}},
-                            {department:{$regex:keyword, $options:"i"}} ,
-                            {faculty:{$regex:keyword, $options:"i"}},
-                            {country:{$regex:keyword, $options:"i"}}  
-                        ]
-                    }
-                ]
-            });
-            const numPages = Math.ceil(count / perPage);
+            // const count = await School.countDocuments({
+            //     $and:[
+            //         {
+            //             $or: [{ deleted: { $eq: false } }, { deleted: { $eq: null } }],
+            //         },
+            //         {
+            //             $or:[
+            //                 {schoolName:{$regex:keyword, $options:"i"}},
+            //                 {department:{$regex:keyword, $options:"i"}} ,
+            //                 {faculty:{$regex:keyword, $options:"i"}},
+            //                 {country:{$regex:keyword, $options:"i"}}  
+            //             ]
+            //         },
+            //         {country}
+            //     ]
+            // });
+            // const numPages = Math.ceil(count / perPage);
 
            
             const result = await School.find({
@@ -205,8 +208,11 @@ export const searchSchool = expressAsyncHandler(
                 },
                 {
                     $or: [{ deleted: { $eq: false } }, { deleted: { $eq: null } }]
-                }
+                },
+                {country},
+                
                ]
+               
                 
             })
             .populate("author")
@@ -214,10 +220,23 @@ export const searchSchool = expressAsyncHandler(
             .limit(perPage)
             .skip(page * perPage)
             
+            //@ts-ignore
+            let filteredsult=[] ;
+            // let finalResult ;
+            if(degree){
+                filteredsult =  result.filter(item=>item.degree==degree)
+                
+            }
+            //@ts-ignore
+           const  finalResult = filteredsult.length > 0 ? filteredsult:result
 
+            
+            const count = finalResult.length
+            const numPages = Math.ceil(count / perPage)
             res.json({
-                message:`${result.length} items returned from search query`,
-                result,
+                //@ts-ignore
+                message:`${finalResult.length} items returned from search query`,
+                result: finalResult,
                 count,
                 numPages
             })
@@ -251,7 +270,8 @@ export const editSchoolRecord = expressAsyncHandler(
                 aboutSchool,
                 contact,
                 file,
-                logo
+                logo,
+                degree
             } = req.body
             let fileName;
             let logoName;
@@ -296,6 +316,7 @@ export const editSchoolRecord = expressAsyncHandler(
                 ...(contact && { contact }),
                 ...(file && { file:fileName }),
                 ...(logo && { logo:logoName }),
+                ...(degree && { degree }),
             }, {new:true})
             res.json({
                 message:'Record Updated',
