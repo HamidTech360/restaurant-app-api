@@ -5,9 +5,9 @@ import cors from "cors";
 
 
 //route imports
-import schools from './routes/schools'
+
 import auth from './routes/auth'
-import admin from './routes/admin'
+
 
 //dotenv config
 config();
@@ -18,10 +18,7 @@ connectDB();
 app.use(cors());
 app.use(express.json({limit:'50mb'}));
 
-
-app.use("/api/schools", schools);
 app.use("/api/auth", auth)
-app.use("/api/admins", admin)
 
 //mongodb+srv://Admin:12345@da-schools.1xq6ql5.mongodb.net/?retryWrites=true&w=majority
 

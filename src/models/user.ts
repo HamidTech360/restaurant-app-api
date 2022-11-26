@@ -1,12 +1,16 @@
 import mongoose, { Types, Schema, SchemaTypes, models } from "mongoose";
 
 
-const tokenSchema = new mongoose.Schema({
-    token:{
+const userSchema = new mongoose.Schema({
+    username:{
         type:String,
         required:true
     },
-    userEmail:{
+    email:{
+        type:String,
+        required:true
+    },
+    password:{
         type:String,
         required:true
     },
@@ -18,4 +22,4 @@ const tokenSchema = new mongoose.Schema({
 })
 
 
-export const Token = mongoose.model('token', tokenSchema)
+export const User = mongoose.model('user', userSchema)

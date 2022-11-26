@@ -1,6 +1,6 @@
 import e, { NextFunction, Request, Response } from "express";
 
-import Admin from "../models/admin";
+import { User } from "../models/user";
 import getUserID from "../utils/get-userID";
 
 //to add : Proper user interface
@@ -17,7 +17,7 @@ export const loggedIn = async (
     try {
       token = req.headers.authorization.split(" ")[1];
 
-      const user = await Admin.findById(getUserID(token)).select("-password");
+      const user = await User.findById(getUserID(token)).select("-password");
 
       if (!user) {
         res.status(401).json("Unauthorized");
