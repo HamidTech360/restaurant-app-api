@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import expressAsyncHandler from "express-async-handler";
+import { createUserValidator, loginValidator } from "../validators/auth";
 import { User } from "../models/user";
+import bcrypt from 'bcryptjs'
 import { SendMail } from "../utils/mail";
 import { generateAccessToken } from "../utils/token";
 
@@ -10,35 +12,71 @@ export const login = expressAsyncHandler(
     async (req:Request, res:Response)=>{
         try{
             const {email, password} = req.body
-            // const admin = await User.findOne({email})
-            // if(!admin){
-            //      res.status(400).json({
-            //         message: `admin with email ${email} does not exist`,
-            //         key: "email",
-            //       });
-            //       return
-            // }else if (!(await admin.matchPassword(password))) {
-            //      res
-            //       .status(400)
-            //       .json({ message: "Password is incorrect", key: "password" });
-            //       return
-            // }else if(!admin.isVerified){
-            //     res
-            //       .status(400)
-            //       .json({ message: "You don't have access to this portal yet", key: "verify" });
-            //       return
-            // }
+            const {error} = loginValidator(req.body)
+            if(error) {
+                res.status(400).send(error.details[0].message)
+                return
+            }
+            const user = await User.findOne({email})
+            if(!user) {
+                 res.status(400).send('Invalid email')
+                 return
+            }
+           
+            
+            if(!( await bcrypt.compare(password, user.password))){
+                    res.status(400).send('Invalid Password')
+                    return
+            }
+            const accessToken = generateAccessToken({sub:user._id})
 
-
-            // const accessToken = generateAccessToken({sub:admin._id})
             res.json({
                 message:'Authentication successful',
-                // accessToken
+                accessToken
             })
 
 
+
         }catch(error){
-            res.status(500).send('Server Error')
+            res.status(500).send({
+                message:'Server Error',
+                error
+            })
+            
+        }
+    }
+)
+
+export const CreateAccount = expressAsyncHandler(
+    async (req:Request, res:Response)=>{
+        const {email, password, username} = req.body
+
+        const {error} = createUserValidator(req.body)
+        if(error) {
+             res.status(400).send(error.details[0].message)
+             return
+        }
+        
+        try{
+            const checkEmail = await User.findOne({email})
+            if(checkEmail){
+                  res.status(400).send('Email already exist')
+                  return
+            }
+
+            const user = await User.create({
+                email,
+                password,
+                username
+            })
+            res.json({
+                message:'User Account created',
+                user
+            })
+        }catch(error){
+            res.status(500).send({
+                message:'Server Errror'
+            })
         }
     }
 )

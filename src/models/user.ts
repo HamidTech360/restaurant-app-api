@@ -1,4 +1,5 @@
 import mongoose, { Types, Schema, SchemaTypes, models } from "mongoose";
+import bcrypt from 'bcryptjs'
 
 
 const userSchema = new mongoose.Schema({
@@ -13,13 +14,21 @@ const userSchema = new mongoose.Schema({
     password:{
         type:String,
         required:true
-    },
-    createdAt:{
-        type:Date,
-        default:Date.now,
-        expires:18000
     }
 })
 
+userSchema.pre("save", async function (next) {
+    if (!this.isModified("password")) {
+      next();
+    }
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+});
 
-export const User = mongoose.model('user', userSchema)
+userSchema.methods.matchPassword = async function (enteredPassword: string) {
+    return await bcrypt.compare(enteredPassword, this.password);
+};
+
+userSchema.index({ "$**": "text" });
+
+export const User = mongoose.models.User || mongoose.model('User', userSchema)

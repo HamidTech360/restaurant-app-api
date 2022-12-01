@@ -4,7 +4,8 @@ import * as controller from '../controllers/auth'
 
 const router = Router();
 
-router.post("/", controller.login);
+router.post("/login", controller.login);
+router.post("/create", controller.CreateAccount);
 
 
 export default router;
