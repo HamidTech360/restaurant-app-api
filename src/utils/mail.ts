@@ -1,35 +1,28 @@
-import axios from 'axios'
+import sgMail from '@sendgrid/mail'
 
-interface Props {
-    targetEmail:[object];
-    subject:string;
-    htmlContent:string;
-    admin:string;
-}
 
-export async function SendMail (props:Props){
+export const sendMail =async  (receiver_email:any, subject:any, email_body:any)=>{
+    
+    //console.log('in the mail functiion');
     
     try{
-        const payload = {
-            sender:{
-                name:props.admin,
-                email:'owolabihammed360@gmail.com'
-            },
-            to:[
-                ...props.targetEmail
-            ],
-            subject:props.subject,
-            htmlContent:props.htmlContent
+        sgMail.setApiKey(`${process.env.SEND_GRID_EMAIL_KEY}`)
+        const message = {
+           to: receiver_email, 
+           from:{
+               name:'Hamid',
+               email:'hamid@icopystory.com'
+           },
+           subject,
+           text:'Email from KA Portal',
+           html:email_body
         }
 
-        const response = await axios.post(`https://api.sendinblue.com/v3/smtp/email`, payload, {headers:{
-            "content-type": "application/json",
-            "api-key":`${process.env.SENDINBLUEAPIKEY}`
-        }})
-        console.log(response.data)
-        return 'success'
-    }catch(error:any){
-        console.log(error.response?.data)
-        return error
+        const response = await sgMail.send(message)
+        console.log('Email sent successfully');
+        
+    }catch(ex){
+       console.log(ex);
+       
     }
 }

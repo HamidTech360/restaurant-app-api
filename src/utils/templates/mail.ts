@@ -1,12 +1,11 @@
-export function SignUpMailTemplate (link:string){
+export function createAccountTemplate (){
     return(
         `
         <!DOCTYPE html>
         <html lang="en">
         <body>
-            <h1>Welcome to Settlin</h1>
-            <p>Click on this <a href="${link}">Link</a> to comfirm your email address</p>
-        </body>
+            <h1>Account created on Khayrul Adab Portal</h1>
+            <p>A new account has been created . Please comfirm that you created the account</p>
         </html>
         `
     )

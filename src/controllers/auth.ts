@@ -3,7 +3,8 @@ import expressAsyncHandler from "express-async-handler";
 import { createUserValidator, loginValidator } from "../validators/auth";
 import { User } from "../models/user";
 import bcrypt from 'bcryptjs'
-import { SendMail } from "../utils/mail";
+import { sendMail } from "../utils/mail";
+import { createAccountTemplate } from "../utils/templates/mail";
 import { generateAccessToken } from "../utils/token";
 
 //@ts-ignore
@@ -69,6 +70,7 @@ export const CreateAccount = expressAsyncHandler(
                 password,
                 username
             })
+            sendMail('owolabihammed3600@gmail.com', "Account createtion alert", createAccountTemplate())
             res.json({
                 message:'User Account created',
                 user

@@ -7,6 +7,7 @@ import cors from "cors";
 //route imports
 
 import auth from './routes/auth'
+import student from './routes/student'
 
 
 //dotenv config
@@ -19,8 +20,9 @@ app.use(cors());
 app.use(express.json({limit:'50mb'}));
 
 app.use("/api/auth", auth)
+app.use("/api/student", student)
 
-//mongodb+srv://Admin:12345@da-schools.1xq6ql5.mongodb.net/?retryWrites=true&w=majority
+
 
 app.get("/", (res: Response) => res.send("Hello"));
 
