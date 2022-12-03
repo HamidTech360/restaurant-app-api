@@ -1,7 +1,7 @@
 {
   "name": "KA Portal",
   "version": "1.0.0",
-  "description": "setlinn apu",
+  "description": "setlinn ap",
   "main": "./dist/index.js",
   "engines": {
     "node": "16.15.1"
@@ -10,15 +10,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./dist/index.js",
-    "build": "tsc",
-    "dev": "nodemon src/index.ts",
-    "data:import": "ts-node src/seeder",
-    "data:destroy": "ts-node src/seeder -d",
-    "seeder": "ts-node src/seeder.ts",
-    "lint": "eslint .",
-    "lint:fix": "eslint --fix",
-    "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc"
+    "compile": "tsc",
+    "prestart": "npm run compile",
+    "dev": "nodemon src/index.ts"
   },
+  
   "license": "MIT",
   "dependencies": {
     "@sendgrid/mail": "^7.7.0",
