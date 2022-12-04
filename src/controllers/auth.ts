@@ -20,15 +20,16 @@ export const testAuth = expressAsyncHandler(
 export const login = expressAsyncHandler(
     async (req:Request, res:Response)=>{
         try{
-            const {email, password} = req.body
+            const {password, username} = req.body
             const {error} = loginValidator(req.body)
             if(error) {
                 res.status(400).send(error.details[0].message)
                 return
             }
-            const user = await User.findOne({email})
+            
+            const user= await User.findOne({username})
             if(!user) {
-                 res.status(400).send('Invalid email')
+                 res.status(400).send('Invalid username or email')
                  return
             }
            
