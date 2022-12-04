@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.loggedIn = void 0;
-const User_1 = __importDefault(require("../models/User"));
+const user_1 = require("../models/user");
 const get_userID_1 = __importDefault(require("../utils/get-userID"));
 //to add : Proper user interface
 const loggedIn = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -22,7 +22,7 @@ const loggedIn = (req, res, next) => __awaiter(void 0, void 0, void 0, function*
         req.headers.authorization.startsWith("Bearer")) {
         try {
             token = req.headers.authorization.split(" ")[1];
-            const user = yield User_1.default.findById((0, get_userID_1.default)(token)).select("-password");
+            const user = yield user_1.User.findById((0, get_userID_1.default)(token)).select("-password");
             if (!user) {
                 res.status(401).json("Unauthorized");
             }

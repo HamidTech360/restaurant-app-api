@@ -6,12 +6,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.generateRefreshToken = exports.generateAccessToken = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const generateAccessToken = (payload) => {
-    return jsonwebtoken_1.default.sign(payload, process.env.JWT_SECRET || "", { expiresIn: "50m" });
+    return jsonwebtoken_1.default.sign(payload, process.env.JWT_SECRET || "");
 };
 exports.generateAccessToken = generateAccessToken;
 const generateRefreshToken = (payload) => {
     return jsonwebtoken_1.default.sign(payload, process.env.REFRESH_SECRET || "", {
-        expiresIn: "7d",
+        expiresIn: "1h",
     });
 };
 exports.generateRefreshToken = generateRefreshToken;
