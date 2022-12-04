@@ -2,7 +2,7 @@
   "name": "setlinn-backend",
   "version": "1.0.0",
   "description": "setlinn ap",
-  "main": "src/index.js",
+  "main": "./dist/index.js",
   "engines": {
     "node": "16.15.1"
   },

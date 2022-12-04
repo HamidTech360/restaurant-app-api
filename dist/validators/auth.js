@@ -17,7 +17,7 @@ exports.createUserValidator = createUserValidator;
 function loginValidator(user) {
     const schema = {
         password: joi_browser_1.default.string().required(),
-        email: joi_browser_1.default.string().email().required()
+        username: joi_browser_1.default.string().required()
     };
     return joi_browser_1.default.validate(user, schema);
 }

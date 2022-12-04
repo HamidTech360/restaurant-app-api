@@ -28,15 +28,15 @@ exports.testAuth = (0, express_async_handler_1.default)((req, res) => __awaiter(
 }));
 exports.login = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { email, password } = req.body;
+        const { password, username } = req.body;
         const { error } = (0, auth_1.loginValidator)(req.body);
         if (error) {
             res.status(400).send(error.details[0].message);
             return;
         }
-        const user = yield user_1.User.findOne({ email });
+        const user = yield user_1.User.findOne({ username });
         if (!user) {
-            res.status(400).send('Invalid email');
+            res.status(400).send('Invalid username or email');
             return;
         }
         if (!(yield bcryptjs_1.default.compare(password, user.password))) {
