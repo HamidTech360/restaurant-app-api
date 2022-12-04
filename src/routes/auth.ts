@@ -6,6 +6,7 @@ const router = Router();
 
 router.post("/login", controller.login);
 router.post("/create", controller.CreateAccount);
+router.get("/test", controller.testAuth)
 
 
 export default router;

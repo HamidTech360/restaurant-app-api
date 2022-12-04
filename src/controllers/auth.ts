@@ -9,6 +9,14 @@ import { generateAccessToken } from "../utils/token";
 
 //@ts-ignore
 
+export const testAuth = expressAsyncHandler(
+    async (req:Request, res:Response)=>{
+        res.json({
+            message:'API is Live'
+        })
+    }
+)
+
 export const login = expressAsyncHandler(
     async (req:Request, res:Response)=>{
         try{
