@@ -24,7 +24,7 @@ app.use("/api/student", student)
 
 
 
-app.get("/", (res: Response) => res.send("Hello"));
+// app.get("/", (res: Response) => res.send("Hello"));
 
 app.listen(process.env.PORT, () =>
   console.log(`Express app running on ${process.env.PORT}`)
