@@ -19,5 +19,4 @@ app.use((0, cors_1.default)());
 app.use(express_1.default.json({ limit: '50mb' }));
 app.use("/api/auth", auth_1.default);
 app.use("/api/student", student_1.default);
-app.get("/", (res) => res.send("Hello"));
 app.listen(process.env.PORT, () => console.log(`Express app running on ${process.env.PORT}`));
