@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAllStudents = exports.createStudentRecord = void 0;
+exports.updateStudentRecord = exports.getSingleStudent = exports.getAllStudents = exports.createStudentRecord = void 0;
 const students_1 = require("../models/students");
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const student_1 = require("../validators/student");
@@ -64,6 +64,39 @@ exports.getAllStudents = (0, express_async_handler_1.default)((req, res) => __aw
         res.json({
             message: 'All students record fetched',
             students
+        });
+    }
+    catch (error) {
+        res.status(500).send({
+            message: 'Server Error',
+            error
+        });
+    }
+}));
+exports.getSingleStudent = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    try {
+        const student = yield students_1.Student.findById(id);
+        res.json({
+            message: 'Student record fetched',
+            student
+        });
+    }
+    catch (error) {
+        res.status(500).send({
+            message: 'Server Error',
+            error
+        });
+    }
+}));
+exports.updateStudentRecord = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    const { firstName, lastName, gender, dob, admissionDate, address, state, level, parentName, parentAddress, phoneNumber } = req.body;
+    try {
+        const student = yield students_1.Student.findByIdAndUpdate(id, Object.assign(Object.assign(Object.assign(Object.assign(Object.assign(Object.assign(Object.assign(Object.assign(Object.assign(Object.assign(Object.assign({}, (firstName && { firstName })), (lastName && { lastName })), (gender && { gender })), (dob && { dob })), (admissionDate && { admissionDate })), (address && { address })), (state && { state })), (level && { level })), (parentName && { parentName })), (parentAddress && { parentAddress })), (phoneNumber && { phoneNumber })), { new: true });
+        res.json({
+            message: 'Student record updated successfully',
+            student
         });
     }
     catch (error) {

@@ -29,4 +29,6 @@ const controller = __importStar(require("../controllers/students"));
 const router = (0, express_1.Router)();
 router.post("/create", auth_1.loggedIn, controller.createStudentRecord);
 router.get("/", auth_1.loggedIn, controller.getAllStudents);
+router.get("/:id", auth_1.loggedIn, controller.getSingleStudent);
+router.put("/:id", auth_1.loggedIn, controller.updateStudentRecord);
 exports.default = router;
