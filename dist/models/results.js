@@ -20,10 +20,10 @@ const resultSchema = new mongoose_1.default.Schema({
         type: String,
         required: true
     },
-    // subjects:{
-    //     type:[String],
-    //     required:true
-    // },
+    session: {
+        type: String,
+        required: true
+    },
     scores: {
         type: [[String]],
         required: true

@@ -1,14 +1,19 @@
 import expressAsyncHandler from "express-async-handler";
 import { Request, Response } from "express";
 import { Result } from "../models/results";
+import { Student } from "../models/students";
 
 export const uploadResult = expressAsyncHandler(
     async (req:Request, res:Response)=>{
-        const {scores, regNumber, studentId} = req.body
+        const {scores, regNumber, session} = req.body
         try{
             const result = await Result.create({
                 regNumber,
-                scores
+                scores,
+                session
+            })
+            const updateStudent = await Student.findOneAndUpdate({regNumber}, {
+                $addToSet:{results:result._id}
             })
             res.json({
                 message:'Result saved successfully',

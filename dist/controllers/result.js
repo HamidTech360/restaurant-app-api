@@ -15,12 +15,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.EditResult = exports.uploadResult = void 0;
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const results_1 = require("../models/results");
+const students_1 = require("../models/students");
 exports.uploadResult = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { scores, regNumber, studentId } = req.body;
+    const { scores, regNumber, session } = req.body;
     try {
         const result = yield results_1.Result.create({
             regNumber,
-            scores
+            scores,
+            session
+        });
+        const updateStudent = yield students_1.Student.findOneAndUpdate({ regNumber }, {
+            $addToSet: { results: result._id }
         });
         res.json({
             message: 'Result saved successfully',
