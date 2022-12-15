@@ -24,8 +24,9 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
+const auth_1 = require("../middleware/auth");
 const controller = __importStar(require("../controllers/result"));
 const router = (0, express_1.Router)();
-router.post("/", controller.uploadResult);
-router.put("/:id", controller.EditResult);
+router.post("/", auth_1.loggedIn, controller.uploadResult);
+router.put("/:id", auth_1.loggedIn, controller.EditResult);
 exports.default = router;

@@ -4,8 +4,8 @@ import * as controller from '../controllers/result'
 
 const router = Router();
 
-router.post("/", controller.uploadResult);
-router.put("/:id", controller.EditResult)
+router.post("/",loggedIn, controller.uploadResult);
+router.put("/:id",loggedIn, controller.EditResult)
 
 
 export default router;
