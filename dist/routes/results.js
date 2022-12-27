@@ -29,4 +29,5 @@ const controller = __importStar(require("../controllers/result"));
 const router = (0, express_1.Router)();
 router.post("/", auth_1.loggedIn, controller.uploadResult);
 router.put("/:id", auth_1.loggedIn, controller.EditResult);
+router.get("/:id", controller.getSingleResult);
 exports.default = router;

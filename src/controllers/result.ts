@@ -48,3 +48,24 @@ export const EditResult = expressAsyncHandler(
         }
     }
 )
+
+export const getSingleResult = expressAsyncHandler(
+    async(req:Request, res:Response)=>{
+        const id = req.params.id
+        try{
+            const result = await Student.findById(id)
+                    .populate("results")
+
+                    res.json({
+                        message:'Student result fetched',
+                        result
+                    })
+
+        }catch(error){
+            res.status(500).send({
+                message:'Server Error',
+                error
+            })
+        }
+    }
+)
