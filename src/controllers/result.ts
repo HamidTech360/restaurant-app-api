@@ -49,7 +49,7 @@ export const EditResult = expressAsyncHandler(
     }
 )
 
-export const getSingleResult = expressAsyncHandler(
+export const getStudentResults = expressAsyncHandler(
     async(req:Request, res:Response)=>{
         const id = req.params.id
         try{
@@ -60,6 +60,26 @@ export const getSingleResult = expressAsyncHandler(
                         message:'Student result fetched',
                         result
                     })
+
+        }catch(error){
+            res.status(500).send({
+                message:'Server Error',
+                error
+            })
+        }
+    }
+)
+
+export const getSingleResult = expressAsyncHandler(
+    async(req:Request, res:Response)=>{
+        const id = req.params.id
+        try{
+            const result = await Result.findById(id)
+
+                res.json({
+                    message:'single result fetched',
+                    result
+                })
 
         }catch(error){
             res.status(500).send({

@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getSingleResult = exports.EditResult = exports.uploadResult = void 0;
+exports.getSingleResult = exports.getStudentResults = exports.EditResult = exports.uploadResult = void 0;
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const results_1 = require("../models/results");
 const students_1 = require("../models/students");
@@ -58,13 +58,29 @@ exports.EditResult = (0, express_async_handler_1.default)((req, res) => __awaite
         });
     }
 }));
-exports.getSingleResult = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.getStudentResults = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     try {
         const result = yield students_1.Student.findById(id)
             .populate("results");
         res.json({
             message: 'Student result fetched',
+            result
+        });
+    }
+    catch (error) {
+        res.status(500).send({
+            message: 'Server Error',
+            error
+        });
+    }
+}));
+exports.getSingleResult = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    try {
+        const result = yield results_1.Result.findById(id);
+        res.json({
+            message: 'single result fetched',
             result
         });
     }
