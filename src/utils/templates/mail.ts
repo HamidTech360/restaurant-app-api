@@ -11,6 +11,20 @@ export function createAccountTemplate (){
     )
 }
 
+export function generateOTPTemplate (otp:any){
+    return(
+        `
+        <!DOCTYPE html>
+        <html lang="en">
+        <body>
+            
+            <p> Sign In with the OTP below. OTP expires in 5 Minutes </p>
+            <h1>${otp}</h1>
+        </html>
+        `
+    )
+}
+
 export function forgotPasswordEmailTemplate (link:string){
     return(
         `

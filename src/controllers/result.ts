@@ -7,11 +7,18 @@ export const uploadResult = expressAsyncHandler(
     async (req:Request, res:Response)=>{
         const {scores, regNumber, session} = req.body
         try{
+            const checkReg = await Student.findOne({regNumber})
+            if(!checkReg){
+                res.status(400).send({
+                    message:'Student with this regNumber does not exist'
+                })
+            }
             const result = await Result.create({
                 regNumber,
                 scores,
                 session
             })
+
             const updateStudent = await Student.findOneAndUpdate({regNumber}, {
                 $addToSet:{results:result._id}
             })

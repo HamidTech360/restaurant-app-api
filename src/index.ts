@@ -9,6 +9,7 @@ import cors from "cors";
 import auth from './routes/auth'
 import student from './routes/student'
 import result from './routes/results'
+import otp from './routes/otp'
 
 
 //dotenv config
@@ -23,6 +24,7 @@ app.use(express.json({limit:'50mb'}));
 app.use("/api/auth", auth)
 app.use("/api/student", student)
 app.use("/api/result", result)
+app.use("/api/otp", otp)
 
 
 

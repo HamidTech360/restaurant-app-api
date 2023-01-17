@@ -19,6 +19,12 @@ const students_1 = require("../models/students");
 exports.uploadResult = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { scores, regNumber, session } = req.body;
     try {
+        const checkReg = yield students_1.Student.findOne({ regNumber });
+        if (!checkReg) {
+            res.status(400).send({
+                message: 'Student with this regNumber does not exist'
+            });
+        }
         const result = yield results_1.Result.create({
             regNumber,
             scores,

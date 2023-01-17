@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.forgotPasswordEmailTemplate = exports.createAccountTemplate = void 0;
+exports.forgotPasswordEmailTemplate = exports.generateOTPTemplate = exports.createAccountTemplate = void 0;
 function createAccountTemplate() {
     return (`
         <!DOCTYPE html>
@@ -12,6 +12,18 @@ function createAccountTemplate() {
         `);
 }
 exports.createAccountTemplate = createAccountTemplate;
+function generateOTPTemplate(otp) {
+    return (`
+        <!DOCTYPE html>
+        <html lang="en">
+        <body>
+            
+            <p> Sign In with the OTP below. OTP expires in 5 Minutes </p>
+            <h1>${otp}</h1>
+        </html>
+        `);
+}
+exports.generateOTPTemplate = generateOTPTemplate;
 function forgotPasswordEmailTemplate(link) {
     return (`
         <!DOCTYPE html>

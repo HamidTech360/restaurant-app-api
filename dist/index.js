@@ -11,6 +11,7 @@ const cors_1 = __importDefault(require("cors"));
 const auth_1 = __importDefault(require("./routes/auth"));
 const student_1 = __importDefault(require("./routes/student"));
 const results_1 = __importDefault(require("./routes/results"));
+const otp_1 = __importDefault(require("./routes/otp"));
 //dotenv config
 (0, dotenv_1.config)();
 const app = (0, express_1.default)();
@@ -21,4 +22,5 @@ app.use(express_1.default.json({ limit: '50mb' }));
 app.use("/api/auth", auth_1.default);
 app.use("/api/student", student_1.default);
 app.use("/api/result", results_1.default);
+app.use("/api/otp", otp_1.default);
 app.listen(process.env.PORT, () => console.log(`Express app running on ${process.env.PORT}`));
