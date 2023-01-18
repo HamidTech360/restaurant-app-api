@@ -12,6 +12,16 @@ export const uploadResult = expressAsyncHandler(
                 res.status(400).send({
                     message:'Student with this regNumber does not exist'
                 })
+                return
+            }
+            const findDuplicate = await Result.findOne({regNumber, session})
+           
+            
+            if(findDuplicate){
+                res.status(400).send({
+                    message:'Result for this session has already been uploaded for this student'
+                })
+                return
             }
             const result = await Result.create({
                 regNumber,

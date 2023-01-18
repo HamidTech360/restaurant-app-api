@@ -48,7 +48,6 @@ exports.getOTP = (0, express_async_handler_1.default)((req, res) => __awaiter(vo
 exports.verifyOTP = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const checkOtp = yield otp_1.OTP.findOne({ otp: req.body.otp });
-        console.log(req.body.otp, checkOtp);
         if (checkOtp) {
             res.send({
                 message: 'OTP verified'

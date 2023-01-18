@@ -21,7 +21,7 @@ const sendMail = (receiver_email, subject, email_body) => __awaiter(void 0, void
         const message = {
             to: receiver_email,
             from: {
-                name: 'Hamid',
+                name: 'مدرسة خير الأدب',
                 email: 'hamid@icopystory.com'
             },
             subject,

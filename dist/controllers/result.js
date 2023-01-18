@@ -24,6 +24,14 @@ exports.uploadResult = (0, express_async_handler_1.default)((req, res) => __awai
             res.status(400).send({
                 message: 'Student with this regNumber does not exist'
             });
+            return;
+        }
+        const findDuplicate = yield results_1.Result.findOne({ regNumber, session });
+        if (findDuplicate) {
+            res.status(400).send({
+                message: 'Result for this session has already been uploaded for this student'
+            });
+            return;
         }
         const result = yield results_1.Result.create({
             regNumber,

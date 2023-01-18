@@ -43,7 +43,7 @@ export const verifyOTP = expressAsyncHandler(
     async (req:Request, res:Response)=>{
         try{
             const checkOtp = await OTP.findOne({otp:req.body.otp})
-            console.log(req.body.otp, checkOtp)
+            
 
             if(checkOtp){
                 res.send({
