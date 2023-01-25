@@ -10,6 +10,8 @@ import auth from './routes/auth'
 import student from './routes/student'
 import result from './routes/results'
 import otp from './routes/otp'
+import event from './routes/event'
+import notification from './routes/notification'
 
 
 //dotenv config
@@ -25,7 +27,8 @@ app.use("/api/auth", auth)
 app.use("/api/student", student)
 app.use("/api/result", result)
 app.use("/api/otp", otp)
-
+app.use("/api/event", event)
+app.use("/api/notification", notification)
 
 
 
