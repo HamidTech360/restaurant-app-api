@@ -11,7 +11,7 @@ export const getOTP = expressAsyncHandler(
 
             if(checkOTP.length > 0){
                //send mail
-               sendMail('owolabihammed3600@gmail.com', "Authentication OTP", generateOTPTemplate(checkOTP[0].otp))
+               sendMail(['owolabihammed3600@gmail.com', 'hammedowolabi2001@gmail.com', 'khayruladab.ibadan@gmail.com'], "Authentication OTP", generateOTPTemplate(checkOTP[0].otp))
                res.send({
                     message:'OTP retrieved sent to the central Email'
                })
@@ -24,7 +24,7 @@ export const getOTP = expressAsyncHandler(
             })
 
             //send mail
-            sendMail('owolabihammed3600@gmail.com', "Authentication OTP", generateOTPTemplate(code))
+            sendMail(['owolabihammed3600@gmail.com', 'hammedowolabi2001@gmail.com', 'khayruladab.ibadan@gmail.com'], "Authentication OTP", generateOTPTemplate(code))
             res.send({
                 message:'OTP sent to the central Email'
            })

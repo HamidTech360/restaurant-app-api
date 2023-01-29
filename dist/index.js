@@ -14,6 +14,7 @@ const results_1 = __importDefault(require("./routes/results"));
 const otp_1 = __importDefault(require("./routes/otp"));
 const event_1 = __importDefault(require("./routes/event"));
 const notification_1 = __importDefault(require("./routes/notification"));
+const analytics_1 = __importDefault(require("./routes/analytics"));
 //dotenv config
 (0, dotenv_1.config)();
 const app = (0, express_1.default)();
@@ -27,4 +28,5 @@ app.use("/api/result", results_1.default);
 app.use("/api/otp", otp_1.default);
 app.use("/api/event", event_1.default);
 app.use("/api/notification", notification_1.default);
+app.use("/api/analytics", analytics_1.default);
 app.listen(process.env.PORT, () => console.log(`Express app running on ${process.env.PORT}`));

@@ -15,9 +15,22 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getAnalytics = void 0;
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const students_1 = require("../models/students");
+const events_1 = require("../models/events");
+const notification_1 = require("../models/notification");
 exports.getAnalytics = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const totalStudents = yield students_1.Student.countDocuments();
+        const totalEvents = yield events_1.Event.countDocuments();
+        const activeStudents = yield students_1.Student.countDocuments({ level: { $ne: 11 } });
+        const notifications = yield notification_1.Notification.find()
+            .sort({ createdAt: -1 })
+            .limit(4);
+        res.json({
+            activeStudents,
+            totalStudents,
+            totalEvents,
+            notifications
+        });
     }
     catch (error) {
         res.status(500).send({

@@ -17,10 +17,11 @@ import expressAsyncHandler from "express-async-handler";
 export const createEvent = expressAsyncHandler(
     async(req:Request, res:Response)=>{
         try{
-            const {header, body} = req.body
+            const {header, body, eventDate} = req.body
             const newEvent = await Event.create({
                 header,
-                body
+                body,
+                eventDate
             })
             res.send({
                 message:'Event saved',

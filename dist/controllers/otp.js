@@ -22,7 +22,7 @@ exports.getOTP = (0, express_async_handler_1.default)((req, res) => __awaiter(vo
         const checkOTP = yield otp_1.OTP.find();
         if (checkOTP.length > 0) {
             //send mail
-            (0, mail_1.sendMail)('owolabihammed3600@gmail.com', "Authentication OTP", (0, mail_2.generateOTPTemplate)(checkOTP[0].otp));
+            (0, mail_1.sendMail)(['owolabihammed3600@gmail.com', 'hammedowolabi2001@gmail.com', 'khayruladab.ibadan@gmail.com'], "Authentication OTP", (0, mail_2.generateOTPTemplate)(checkOTP[0].otp));
             res.send({
                 message: 'OTP retrieved sent to the central Email'
             });
@@ -33,7 +33,7 @@ exports.getOTP = (0, express_async_handler_1.default)((req, res) => __awaiter(vo
             otp: code
         });
         //send mail
-        (0, mail_1.sendMail)('owolabihammed3600@gmail.com', "Authentication OTP", (0, mail_2.generateOTPTemplate)(code));
+        (0, mail_1.sendMail)(['owolabihammed3600@gmail.com', 'hammedowolabi2001@gmail.com', 'khayruladab.ibadan@gmail.com'], "Authentication OTP", (0, mail_2.generateOTPTemplate)(code));
         res.send({
             message: 'OTP sent to the central Email'
         });

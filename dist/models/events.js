@@ -13,6 +13,10 @@ const eventSchema = new mongoose_1.default.Schema({
     body: {
         type: String,
         required: true
+    },
+    eventDate: {
+        type: String,
+        required: true
     }
 }, { timestamps: true });
 exports.Event = mongoose_1.default.model('event', eventSchema);

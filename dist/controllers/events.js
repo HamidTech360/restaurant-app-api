@@ -27,10 +27,11 @@ const express_async_handler_1 = __importDefault(require("express-async-handler")
 // )
 exports.createEvent = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { header, body } = req.body;
+        const { header, body, eventDate } = req.body;
         const newEvent = yield events_1.Event.create({
             header,
-            body
+            body,
+            eventDate
         });
         res.send({
             message: 'Event saved',
