@@ -59,10 +59,13 @@ export const EditEvent = expressAsyncHandler(
 
 export const getAllEvents = expressAsyncHandler(
     async(req:Request, res:Response)=>{
+        const limit = req.query.limit
+        //console.log(req.query)
         try{
             const events = await Event.find()
                                 .sort({createdAt:-1})
-                                .limit(10)
+                                //@ts-ignore
+                                .limit(parseInt(limit) || 10)
             res.send({
                 message:'Events fetched',
                 event:events

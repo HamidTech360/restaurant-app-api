@@ -11,7 +11,7 @@ export const getAnalytics = expressAsyncHandler(
             const totalStudents = await Student.countDocuments()
             const totalEvents = await Event.countDocuments()
             const totalStaffs = await Staff.countDocuments()
-            const activeStudents = await Student.countDocuments({level:{$ne:11}})
+            const activeStudents = await Student.countDocuments({level:{$lt:11}})
 
             const notifications = await Notification.find()
                                         .sort({ createdAt: -1 })

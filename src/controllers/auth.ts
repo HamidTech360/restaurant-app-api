@@ -92,3 +92,27 @@ export const CreateAccount = expressAsyncHandler(
     }
 )
 
+export const editAccount = expressAsyncHandler(
+    async(req:any, res:Response)=>{
+        const {email, password, username} = req.body
+        try{
+            const user = await User.findById(req.user?._id);
+            const salt = await bcrypt.genSalt(10);
+            const newPassword = await bcrypt.hash(password, salt);
+
+            await User.findByIdAndUpdate(req.user?._id, {
+                ...(username && {username}),
+                ...(email && {email}),
+                ...(password && {password:newPassword})
+            })
+            res.json({
+                message:'Credential updated successfully'
+            })
+        }catch(error){
+            res.status(500).send({
+                message:'Server Errror'
+            })
+        }
+    }
+)
+
