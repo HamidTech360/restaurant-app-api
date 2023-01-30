@@ -61,6 +61,8 @@ export const getAllEvents = expressAsyncHandler(
     async(req:Request, res:Response)=>{
         try{
             const events = await Event.find()
+                                .sort({createdAt:-1})
+                                .limit(10)
             res.send({
                 message:'Events fetched',
                 event:events

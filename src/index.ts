@@ -13,6 +13,7 @@ import otp from './routes/otp'
 import event from './routes/event'
 import notification from './routes/notification'
 import analytics from './routes/analytics'
+import staff from './routes/staffs'
 
 
 //dotenv config
@@ -31,6 +32,7 @@ app.use("/api/otp", otp)
 app.use("/api/event", event)
 app.use("/api/notification", notification)
 app.use("/api/analytics", analytics)
+app.use("/api/staff", staff)
 
 
 

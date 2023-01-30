@@ -62,7 +62,9 @@ exports.EditEvent = (0, express_async_handler_1.default)((req, res) => __awaiter
 }));
 exports.getAllEvents = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const events = yield events_1.Event.find();
+        const events = yield events_1.Event.find()
+            .sort({ createdAt: -1 })
+            .limit(10);
         res.send({
             message: 'Events fetched',
             event: events

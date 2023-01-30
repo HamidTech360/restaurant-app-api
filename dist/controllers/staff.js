@@ -12,35 +12,42 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAnalytics = void 0;
+exports.getAllStaffs = exports.createStaffRecord = void 0;
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
-const students_1 = require("../models/students");
-const events_1 = require("../models/events");
-const notification_1 = require("../models/notification");
 const staff_1 = require("../models/staff");
-exports.getAnalytics = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.createStaffRecord = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { firstName, lastName, email, address, role, phoneNumber } = req.body;
     try {
-        const totalStudents = yield students_1.Student.countDocuments();
-        const totalEvents = yield events_1.Event.countDocuments();
-        const totalStaffs = yield staff_1.Staff.countDocuments();
-        const activeStudents = yield students_1.Student.countDocuments({ level: { $ne: 11 } });
-        const notifications = yield notification_1.Notification.find()
-            .sort({ createdAt: -1 })
-            .limit(4);
+        const newStaff = yield staff_1.Staff.create({
+            firstName,
+            lastName,
+            email,
+            address,
+            role,
+            phoneNumber
+        });
+        res.json({
+            message: 'Staff record saved!',
+            newStaff
+        });
+    }
+    catch (error) {
+        res.status(500).send({
+            message: 'Server Error'
+        });
+    }
+}));
+exports.getAllStaffs = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
         const staffs = yield staff_1.Staff.find();
         res.json({
-            activeStudents,
-            totalStaffs,
-            totalStudents,
-            totalEvents,
-            notifications,
+            message: 'Staffs record fetched',
             staffs
         });
     }
     catch (error) {
         res.status(500).send({
-            message: 'Server Error',
-            error
+            message: 'Server Error'
         });
     }
 }));
