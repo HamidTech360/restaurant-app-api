@@ -12,42 +12,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAllStaffs = exports.createStaffRecord = void 0;
+exports.getTags = void 0;
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
-const staff_1 = require("../models/staff");
-exports.createStaffRecord = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { firstName, lastName, email, address, role, phoneNumber } = req.body;
+const tags_model_1 = __importDefault(require("../models/tags.model"));
+//@Route /api/v1/restaurant/tags
+//@Method GET
+//@Access:  unauthenticated
+exports.getTags = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const newStaff = yield staff_1.Staff.create({
-            firstName,
-            lastName,
-            email,
-            address,
-            role,
-            phoneNumber
-        });
-        res.json({
-            message: 'Staff record saved!',
-            newStaff
-        });
+        const tags = yield tags_model_1.default.find();
+        res.status(201).json({ msg: "Tags fetched", tags });
     }
     catch (error) {
         res.status(500).send({
-            message: 'Server Error'
-        });
-    }
-}));
-exports.getAllStaffs = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const staffs = yield staff_1.Staff.find();
-        res.json({
-            message: 'Staffs record fetched',
-            staffs
-        });
-    }
-    catch (error) {
-        res.status(500).send({
-            message: 'Server Error'
+            message: 'server error',
+            error
         });
     }
 }));

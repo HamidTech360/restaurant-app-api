@@ -3,31 +3,24 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Staff = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
-const staffSchema = new mongoose_1.default.Schema({
-    firstName: {
+const restaurantSchema = new mongoose_1.default.Schema({
+    name: {
         type: String,
-        required: true
+        required: true,
     },
-    lastName: {
+    image: {
         type: String,
-        required: true
     },
-    role: {
+    ratings: {
         type: String,
-        required: true
+        required: true,
     },
-    email: {
+    star: {
         type: String,
-        required: true
+        required: true,
     },
-    phoneNumber: {
-        type: String,
-        required: true
-    },
-    address: {
-        type: String,
-    }
+    recipes: { type: [String] },
 }, { timestamps: true });
-exports.Staff = mongoose_1.default.model('staff', staffSchema);
+const Restaurant = mongoose_1.default.models.Restaurant || mongoose_1.default.model("Restaurant", restaurantSchema);
+exports.default = Restaurant;

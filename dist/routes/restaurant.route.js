@@ -24,11 +24,11 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const auth_1 = require("../middleware/auth");
-const controller = __importStar(require("../controllers/result"));
+const controller = __importStar(require("../controllers/restaurant.controller"));
+const tag_controller_1 = require("../controllers/tag.controller");
 const router = (0, express_1.Router)();
-router.post("/", auth_1.loggedIn, controller.uploadResult);
-router.put("/:id", auth_1.loggedIn, controller.EditResult);
-router.get("/one/:id", controller.getSingleResult);
-router.get("/:id", controller.getStudentResults);
+router.post("/", controller.createRestaurant);
+router.get("/", controller.getRestaurants);
+router.get("/search", controller.searchRestaurant);
+router.get("/tags", tag_controller_1.getTags);
 exports.default = router;
